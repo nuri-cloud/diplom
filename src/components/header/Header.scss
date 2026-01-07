@@ -1,0 +1,152 @@
+.header {
+    padding-top: 30px;
+  }
+  
+  .container {
+    width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .header__container {
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .header__logo img {
+    width: 58px;
+    height: 54px; 
+  }
+  
+  .header__nav {
+    display: flex;
+    gap: 40px;
+    padding: 13px 46px;
+    background-color: #f1f3f7;
+    border-radius: 80px;
+  
+    a {
+      font-family: "Mulish", sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      color: #333;
+      text-decoration: none;
+  
+      &:hover {
+        color: #2f80ed;
+      }
+    }
+  }
+  
+  .header__right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  .lang-switch {
+    position: relative;
+  
+    button {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 14px;
+      border: none;
+      border-radius: 80px;
+      background: #f1f3f7;
+      font-size: 14px;
+    }
+  
+    ul {
+      position: absolute;
+      top: 42px;
+      right: 0;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+      list-style: none;
+      padding: 6px 0;
+  
+      li {
+        padding: 8px 16px;
+        cursor: pointer;
+  
+        &:hover {
+          background: #f2f2f2;
+        }
+      }
+    }
+  }
+  
+  .login-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 80px;
+    background:#f2f2f2;
+    color:black;
+    cursor: pointer;
+    font-size: 14px;
+    img {
+
+      width: 18px;
+      height: 18px;
+    }
+  
+    &:hover {
+      background:#f2f2f296;
+    }
+  }
+  .user-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+  
+    img {
+      width: 20px;
+      height: 20px;
+    }
+  }
+  .user-dropdown {
+    position: relative;
+  
+    button {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #f1f3f7;
+      border-radius: 80px;
+      padding: 8px 14px;
+      border: none;
+      cursor: pointer;
+    }
+  }
+  
+  .user-menu {
+    position: absolute;
+    top: 44px;
+    right: 0;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 6px 20px rgba(0,0,0,.12);
+    list-style: none;
+    padding: 6px 0;
+    width: 180px;
+  
+    li {
+      padding: 10px 16px;
+      cursor: pointer;
+      font-size: 14px;
+  
+      &:hover {
+        background: #f2f2f2;
+      }
+    }
+  }
+  

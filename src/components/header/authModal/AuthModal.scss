@@ -1,0 +1,112 @@
+.auth-overlay {
+  font-family: "Mulish", sans-serif;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+}
+
+.auth-modal {
+  width: 100%;
+  max-width: 400px;
+  background: #f2f6fc;
+  border-radius: 24px;
+  padding: 40px;
+  position: relative;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+
+  .auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    
+    h2 { text-align: center; font-size: 24px; margin-bottom: 8px; }
+    
+    input {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 14px 16px;
+      border-radius: 12px;
+      border: 1px solid #e0e0e0;
+      font-size: 15px;
+      transition: 0.3s;
+
+      &:focus { border-color: #2f80ed; outline: none; }
+      &.error { border-color: #eb5757; background: #fff8f8; }
+    }
+  }
+
+  .password-field {
+    width: 100%;
+    position: relative;
+    input { padding-right: 45px; }
+    img {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 20px;
+      cursor: pointer;
+      opacity: 0.5;
+    }
+  }
+
+  .main-btn {
+    width: 100%;
+    padding: 14px;
+    background: #2f80ed;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 10px;
+    &:hover { background: #1a6cdb; }
+  }
+
+  .switch-text {
+    text-align: center;
+    font-size: 14px;
+    color: #666;
+    span { color: #2f80ed; font-weight: 700; cursor: pointer; }
+  }
+
+  .close-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    img { width: 16px; }
+  }
+  
+  .timer-info {
+    text-align: center;
+    font-size: 13px;
+    color: #888;
+    .resend { color: #2f80ed; cursor: pointer; text-decoration: underline; }
+  }
+}
+input.error {
+  border: 1.5px solid #eb5757 !important;
+  background-color: #fff8f8;
+}
+
+.password-field {
+  width: 100%;
+  position: relative;
+  
+  img {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    width: 20px;
+    opacity: 0.6;
+  }
+}
