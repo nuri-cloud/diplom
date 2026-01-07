@@ -9,6 +9,16 @@ export default defineConfig({
         target: 'http://89.23.99.85',
         changeOrigin: true,
         secure: false,
+      },
+      '/logs': {
+        target: 'http://89.23.99.85',
+        changeOrigin: true,
+        secure: false,
+      },
+      '/settings': {
+        target: 'http://89.23.99.85',
+        changeOrigin: true,
+        secure: false,
       }
     }
   }

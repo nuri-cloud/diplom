@@ -1,0 +1,203 @@
+.log-details-container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  .back-btn {
+    padding: 0.75rem 1.5rem;
+    background: white;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.3s;
+    color: #333;
+    margin-bottom: 1.5rem;
+
+    &:hover {
+      border-color: #3498db;
+      color: #3498db;
+      transform: translateX(-5px);
+    }
+  }
+
+  .loading {
+    text-align: center;
+    padding: 3rem;
+    color: #666;
+    font-size: 1.1rem;
+  }
+
+  .error-message {
+    background: #fee;
+    color: #c33;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 3rem;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    color: #666;
+  }
+
+  .log-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+
+    .log-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 2rem;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+
+      @media (max-width: 768px) {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+
+      & > div:first-child {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+
+        h2 {
+          margin: 0;
+          font-size: 1.75rem;
+        }
+
+        .level-badge {
+          padding: 0.5rem 1rem;
+          border-radius: 20px;
+          font-size: 0.875rem;
+          font-weight: 600;
+          text-transform: uppercase;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+      }
+
+      .log-time {
+        font-size: 1rem;
+        opacity: 0.9;
+      }
+    }
+
+    .log-body {
+      padding: 2rem;
+
+      .info-section,
+      .stack-section,
+      .metadata-section {
+        margin-bottom: 2rem;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+
+        h3 {
+          font-size: 1.25rem;
+          margin-bottom: 1rem;
+          color: #333;
+          border-bottom: 2px solid #f0f0f0;
+          padding-bottom: 0.5rem;
+        }
+      }
+
+      .info-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+
+        @media (max-width: 768px) {
+          grid-template-columns: 1fr;
+        }
+
+        .info-item {
+          &.full-width {
+            grid-column: 1 / -1;
+          }
+
+          label {
+            display: block;
+            font-weight: 600;
+            color: #666;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+          }
+
+          code {
+            background: #f5f5f5;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            color: #e74c3c;
+            display: inline-block;
+          }
+
+          span {
+            font-size: 1rem;
+            color: #333;
+          }
+
+          .message {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+            margin: 0;
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #333;
+          }
+        }
+      }
+
+      .stack-trace,
+      .metadata {
+        background: #2c3e50;
+        color: #ecf0f1;
+        padding: 1.5rem;
+        border-radius: 8px;
+        overflow-x: auto;
+        font-family: 'Courier New', monospace;
+        font-size: 0.875rem;
+        line-height: 1.5;
+        margin: 0;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+      }
+
+      .empty-section {
+        text-align: center;
+        padding: 2rem;
+        background: #f8f9fa;
+        border-radius: 8px;
+        color: #666;
+        font-style: italic;
+
+        p {
+          margin: 0;
+        }
+      }
+    }
+  }
+
+  h2 {
+    color: #666;
+  }
+
+  p {
+    color: #666;
+  }
+}

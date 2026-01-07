@@ -29,5 +29,6 @@ export const confirmRequest = (data) => request("/auth/confirm", {
 // LOGS & SETTINGS
 export const getLogsRequest = (p = 1) => request(`/logs/?page=${p}&page_size=20`);
 export const getAnalyticsRequest = () => request("/logs/analytics");
-export const getSettingsRequest = () => request("/settings/");
+export const getLogByIdRequest = (id) => request(`/logs/${id}`);
+export const getSettingsRequest = () => request("/settings/", { method: "GET", body: JSON.stringify() });
 export const updateSettingsRequest = (data) => request("/settings/", { method: "PUT", body: JSON.stringify(data) });
