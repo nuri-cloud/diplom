@@ -110,9 +110,6 @@ function Header() {
               </button>
               {openUser && (
                 <ul className="user-menu">
-                  <li onClick={() => { navigate("/settings"); setOpenUser(false); }}>
-                    Настройки
-                  </li>
                   <li onClick={handleLogout} className="logout">
                     Выйти
                   </li>
