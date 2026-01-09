@@ -1,24 +1,19 @@
 .settings-container {
-  padding: 2rem;
-  max-width: 800px;
+  max-width: 900px;
   margin: 0 auto;
-
-  h1 {
-    font-size: 2rem;
-    color: #333;
-    margin-bottom: 1.5rem;
-  }
+  padding: 2rem;
 
   h2 {
-    font-size: 1.5rem;
+    font-size: 2rem;
+    margin-bottom: 2rem;
     color: #333;
-    margin-bottom: 1rem;
   }
 
-  p {
+  .loading {
+    text-align: center;
+    padding: 3rem;
     color: #666;
     font-size: 1.1rem;
-    margin-top: 1rem;
   }
 
   .error-message {
@@ -27,17 +22,16 @@
     padding: 1rem;
     border-radius: 8px;
     margin-bottom: 1.5rem;
-    font-size: 0.95rem;
-    animation: slideIn 0.3s ease;
+    border-left: 4px solid #c33;
   }
 
   .success-message {
-    background: #d4edda;
-    color: #155724;
+    background: #efe;
+    color: #2a7;
     padding: 1rem;
     border-radius: 8px;
     margin-bottom: 1.5rem;
-    font-size: 0.95rem;
+    border-left: 4px solid #2a7;
     animation: slideIn 0.3s ease;
   }
 
@@ -51,123 +45,246 @@
       transform: translateY(0);
     }
   }
+}
 
-  .card {
-    background: white;
+// Settings Sections
+.settings-section {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e5e7eb;
+
+  h3 {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .section-description {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .empty-state {
+    color: #999;
+    text-align: center;
     padding: 2rem;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    font-style: italic;
+  }
+}
 
-    label {
-      display: block;
-      font-weight: 600;
-      color: #333;
-      margin-bottom: 0.75rem;
-      font-size: 1rem;
-    }
+// API Token Section
+.token-container {
+  .token-display {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
 
-    input[type="number"] {
-      width: 100%;
-      padding: 0.875rem;
-      border: 2px solid #e0e0e0;
-      border-radius: 8px;
-      font-size: 1rem;
-      transition: all 0.3s;
-      margin-bottom: 1.5rem;
-
-      &:focus {
-        outline: none;
-        border-color: #3498db;
-        box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
-      }
+    .token-input {
+      flex: 1;
+      padding: 0.75rem;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9rem;
+      background: #f9fafb;
 
       &:disabled {
-        background: #f5f5f5;
-        cursor: not-allowed;
-        opacity: 0.7;
+        opacity: 0.6;
       }
     }
 
-    .info-section {
-      background: #f8f9fa;
-      padding: 1.5rem;
-      border-radius: 8px;
-      margin-bottom: 1.5rem;
-      border-left: 4px solid #3498db;
-
-      p {
-        margin: 0;
-        color: #333;
-        font-size: 0.95rem;
-        line-height: 1.8;
-
-        & + p {
-          margin-top: 0.5rem;
-        }
-
-        strong {
-          color: #2c3e50;
-          font-weight: 600;
-        }
-      }
-
-      .tokens-list {
-        margin-top: 1rem;
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-
-        .token-item {
-          background: white;
-          padding: 0.75rem;
-          border-radius: 6px;
-          border: 1px solid #e0e0e0;
-
-          code {
-            font-family: 'Courier New', monospace;
-            color: #e74c3c;
-            font-size: 0.875rem;
-            word-break: break-all;
-          }
-        }
-      }
-    }
-
-    .main-btn {
-      width: 100%;
-      padding: 1rem 2rem;
-      background: #3498db;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 1rem;
-      font-weight: 600;
+    .toggle-btn,
+    .copy-btn {
+      padding: 0.75rem 1rem;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      background: white;
       cursor: pointer;
-      transition: all 0.3s;
+      transition: all 0.2s;
 
       &:hover:not(:disabled) {
-        background: #2980b9;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
-      }
-
-      &:active:not(:disabled) {
-        transform: translateY(0);
+        background: #f3f4f6;
+        border-color: #999;
       }
 
       &:disabled {
-        background: #95a5a6;
+        opacity: 0.5;
         cursor: not-allowed;
-        transform: none;
       }
     }
   }
 
-  // Состояние загрузки
-  & > div:not(.card):not(.error-message) {
-    text-align: center;
-    padding: 3rem;
+  .rotate-btn {
+    padding: 0.75rem 1.5rem;
+    background: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.2s;
+
+    &:hover:not(:disabled) {
+      background: #2563eb;
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
+}
+
+// Retention Policy Section
+.retention-container {
+  .input-group {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+
+    label {
+      font-weight: 500;
+      color: #374151;
+    }
+
+    .retention-input {
+      width: 100px;
+      padding: 0.5rem;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 1rem;
+      text-align: center;
+
+      &:focus {
+        outline: none;
+        border-color: #3b82f6;
+      }
+    }
+  }
+
+  .current-value {
     color: #666;
-    font-size: 1.1rem;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    padding: 0.5rem 1rem;
+    background: #f9fafb;
+    border-radius: 6px;
+    display: inline-block;
+  }
+
+  .save-btn {
+    padding: 0.75rem 1.5rem;
+    background: #10b981;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.2s;
+
+    &:hover:not(:disabled) {
+      background: #059669;
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
+}
+
+// Roles Section
+.roles-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+
+  .role-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 1rem;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    min-width: 150px;
+
+    .role-badge {
+      font-weight: 600;
+      color: #374151;
+      font-size: 1rem;
+    }
+
+    .role-description {
+      font-size: 0.85rem;
+      color: #6b7280;
+    }
+  }
+}
+
+// Refresh All Button
+.refresh-all-btn {
+  width: 100%;
+  padding: 1rem;
+  background: #6b7280;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 1rem;
+  transition: background 0.2s;
+
+  &:hover:not(:disabled) {
+    background: #4b5563;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .settings-container {
+    padding: 1rem;
+
+    h2 {
+      font-size: 1.5rem;
+    }
+  }
+
+  .settings-section {
+    padding: 1.5rem;
+
+    h3 {
+      font-size: 1.1rem;
+    }
+  }
+
+  .token-container .token-display {
+    flex-wrap: wrap;
+
+    .token-input {
+      width: 100%;
+    }
+  }
+
+  .retention-container .input-group {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .roles-list .role-item {
+    min-width: 100%;
   }
 }

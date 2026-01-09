@@ -6,17 +6,17 @@ export default defineConfig({
   server: {
     proxy: {
       '/auth': {
-        target: 'http://89.23.99.85',
+        target: 'https://business.navisdevs.ru',
         changeOrigin: true,
         secure: false,
       },
       '/logs': {
-        target: 'http://89.23.99.85',
+        target: 'https://business.navisdevs.ru',
         changeOrigin: true,
         secure: false,
       },
       '/settings': {
-        target: 'http://89.23.99.85',
+        target: 'https://business.navisdevs.ru',
         changeOrigin: true,
         secure: false,
       }

@@ -27,8 +27,28 @@ export const confirmRequest = (data) => request("/auth/confirm", {
 });
 
 // LOGS & SETTINGS
-export const getLogsRequest = (p = 1) => request(`/logs/?page=${p}&page_size=20`);
+export const getLogsRequest = () => request(`/logs/?page=1&page_size=20`);
 export const getAnalyticsRequest = () => request("/logs/analytics");
 export const getLogByIdRequest = (id) => request(`/logs/${id}`);
-export const getSettingsRequest = () => request("/settings/", { method: "GET", body: JSON.stringify() });
+export const getSettingsRequest = () => request("/settings/api-token", { method: "GET", body: JSON.stringify() });
 export const updateSettingsRequest = (data) => request("/settings/", { method: "PUT", body: JSON.stringify(data) });
+// SETTINGS - добавьте эти строки в конец файла auth.api.js
+export const getApiTokenRequest = () => request("/settings/api-token");
+
+export const rotateApiTokenRequest = () => 
+  request("/settings/api-token/rotate", { 
+    method: "POST", 
+    body: JSON.stringify({}) 
+  });
+
+export const getRolesRequest = () => 
+  request("/settings/roles");
+
+export const getRetentionPolicyRequest = () => 
+  request("/settings/retention-policy");
+
+export const setRetentionPolicyRequest = (data) => 
+  request("/settings/retention-policy", { 
+    method: "POST", 
+    body: JSON.stringify(data) 
+  });

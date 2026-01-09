@@ -46,99 +46,143 @@ export default function AuthModal({ onClose }) {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleAuth = async () => {
-    if (!validate()) {
-      setErrorMessage("Пожалуйста, заполните все поля корректно");
-      return;
-    }
-    
-    setLoading(true);
-    setErrorMessage("");
-    
-    try {
-      if (isLoginMode) {
-        console.log("🔐 Попытка входа с:", { email: form.email.trim() });
-        
-        const res = await loginRequest({ 
-          email: form.email.trim(), 
-          password: form.password 
-        });
-        
-        console.log("✅ Ответ сервера:", res);
-        
-        // С fetch ответ приходит напрямую как объект
-        const token = res.access_token;
-        
-        if (token) {
-          // Создаем user из email (т.к. API не возвращает user данные)
-          const user = {
-            email: form.email.trim(),
-            name: form.email.split('@')[0]
-          };
-          
-          console.log("✅ Сохраняем:", { user, token });
-          
-          login(user, token);
-          setStep("success");
-        } else {
-          console.error("❌ Токен не найден в ответе:", res);
-          setErrorMessage("Ошибка получения токена авторизации");
-        }
-      } else {
-        await registerRequest({
-          email: form.email.trim(),
-          name: form.name.trim(),
-          password: form.password
-        });
-        setStep("code");
-      }
-    } catch (err) {
-      console.error("Auth error:", err);
+const handleAuth = async () => {
+  if (!validate()) {
+    setErrorMessage("Пожалуйста, заполните все поля корректно");
+    return;
+  }
+  
+  setLoading(true);
+  setErrorMessage("");
+  
+  try {
+    if (isLoginMode) {
+      console.log("🔐 Попытка входа с:", { email: form.email.trim() });
       
-      const message = err.detail || 
-                     err.message ||
-                     (isLoginMode ? "Неверный email или пароль" : "Ошибка регистрации. Возможно, email уже используется");
-      setErrorMessage(message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleConfirm = async () => {
-    if (!form.code || form.code.length !== 6) {
-      setErrors({ code: true });
-      setErrorMessage("Введите 6-значный код");
-      return;
-    }
-
-    setLoading(true);
-    setErrorMessage("");
-
-    try {
-      const res = await confirmRequest({ 
-        email: form.email, 
-        code: form.code 
+      const res = await loginRequest({ 
+        email: form.email.trim(), 
+        password: form.password 
       });
       
-      // Если есть токен после подтверждения - логиним
-      if (res.access_token) {
+      console.log("✅ Ответ сервера:", res);
+      
+      const token = res.access_token;
+      
+      if (token) {
         const user = {
           email: form.email.trim(),
-          name: form.name.trim() || form.email.split('@')[0]
+          name: form.email.split('@')[0]
         };
-        login(user, res.access_token);
+        
+        console.log("✅ Сохраняем:", { user, token });
+        
+        login(user, token);
+        setTimeout(() => onClose(), 100);
+      } else {
+        console.error("❌ Токен не найден в ответе:", res);
+        setErrorMessage("Ошибка получения токена авторизации");
       }
+    } else {
+      // 🔥 РЕГИСТРАЦИЯ
+      console.log("📝 Регистрация с данными:", {
+        email: form.email.trim(),
+        name: form.name.trim(),
+        password: "***"
+      });
       
-      setStep("success");
-    } catch (err) {
-      console.error("Confirm error:", err);
-      setErrors({ code: true });
-      setErrorMessage(err.detail || err.message || "Неверный код подтверждения");
-    } finally {
-      setLoading(false);
+      await registerRequest({
+        email: form.email.trim(),
+        name: form.name.trim(),
+        password: form.password
+      });
+      
+      console.log("✅ Регистрация успешна, переход к вводу кода");
+      console.log("🔑 Пароль сохранен в форме:", form.password ? "Да" : "Нет");
+      
+      // ✅ НЕ ОЧИЩАЕМ ПАРОЛЬ! Он нужен для автологина
+      setStep("code");
     }
-  };
+  } catch (err) {
+    console.error("Auth error:", err);
+    
+    const message = err.detail || 
+                   err.message ||
+                   (isLoginMode ? "Неверный email или пароль" : "Ошибка регистрации. Возможно, email уже используется");
+    setErrorMessage(message);
+  } finally {
+    setLoading(false);
+  }
+};
 
+const handleConfirm = async () => {
+  if (!form.code || form.code.length !== 6) {
+    setErrors({ code: true });
+    setErrorMessage("Введите 6-значный код");
+    return;
+  }
+
+  setLoading(true);
+  setErrorMessage("");
+
+  try {
+    console.log("📤 Подтверждение кода:", { email: form.email, code: form.code });
+    
+    // Шаг 1: Подтверждаем email
+    await confirmRequest({ 
+      email: form.email, 
+      code: form.code 
+    });
+    
+    console.log("✅ Email подтвержден успешно");
+    
+    // Шаг 2: Проверяем, что пароль есть
+    if (!form.password) {
+      console.error("❌ Пароль потерян!");
+      setErrorMessage("Ошибка: пароль не сохранен. Пожалуйста, войдите вручную");
+      setIsLoginMode(true);
+      setStep("auth");
+      return;
+    }
+    
+    console.log("🔐 Автоматический вход после подтверждения...");
+    console.log("📧 Email:", form.email.trim());
+    console.log("🔑 Пароль сохранен:", form.password ? "Да" : "Нет");
+    
+    // Шаг 3: Автоматически логиним пользователя
+    const loginRes = await loginRequest({
+      email: form.email.trim(),
+      password: form.password
+    });
+    
+    console.log("✅ Ответ loginRequest:", loginRes);
+    
+    if (loginRes.access_token) {
+      const user = {
+        email: form.email.trim(),
+        name: form.name.trim() || form.email.split('@')[0]
+      };
+      
+      console.log("✅ Сохраняем токен и пользователя:", { user, token: loginRes.access_token });
+      
+      login(user, loginRes.access_token);
+      
+      // Закрываем модалку
+      setTimeout(() => {
+        onClose();
+      }, 100);
+    } else {
+      console.error("❌ Токен не найден в ответе loginRequest");
+      throw new Error("Не удалось получить токен авторизации");
+    }
+    
+  } catch (err) {
+    console.error("❌ Ошибка в handleConfirm:", err);
+    setErrors({ code: true });
+    setErrorMessage(err.detail || err.message || "Ошибка подтверждения. Попробуйте войти вручную");
+  } finally {
+    setLoading(false);
+  }
+};
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
       if (step === "auth") {
@@ -286,4 +330,4 @@ export default function AuthModal({ onClose }) {
       </div>
     </div>
   );
-}
+} 

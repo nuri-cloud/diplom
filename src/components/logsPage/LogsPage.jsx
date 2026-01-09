@@ -7,58 +7,56 @@ import "./LogsPage.scss";
 export default function LogsPage() {
   const { token } = useContext(AuthContext);
   const navigate = useNavigate();
-  const [logs, setLogs] = useState([]);
+  const [allLogs, setAllLogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const [total, setTotal] = useState(0);
-  const [filter, setFilter] = useState("all"); 
-  const pageSize = 20;
 
   useEffect(() => {
     if (token) {
-      fetchLogs(currentPage, filter);
+      fetchAllLogs();
     } else {
       setLoading(false);
     }
-  }, [token, currentPage, filter]);
- 
+  }, [token]);
 
-  const fetchLogs = async (page, levelFilter) => {
+  const fetchAllLogs = async () => {
     try {
       setLoading(true);
-      
-      // Преобразуем фильтр в верхний регистр для API
-      const apiFilter = levelFilter === "all" ? null : levelFilter.toUpperCase();
-      
-      const data = await getLogsRequest(page, pageSize, apiFilter);
-      
-      console.log("Logs data:", data); // Для отладки
-      
-      // Формат ответа: { total, page, page_size, logs }
-      setLogs(data.logs || []);
-      setTotal(data.total || 0);
-      setTotalPages(Math.ceil((data.total || 0) / pageSize));
-      
       setError("");
+      
+      let page = 1;
+      let allFetchedLogs = [];
+      let hasMore = true;
+      
+      // Загружаем все страницы
+      while (hasMore) {
+        console.log(`📥 Загрузка страницы ${page}...`);
+        const data = await getLogsRequest(page, 100); // По 100 за раз
+        
+        if (data.logs && data.logs.length > 0) {
+          allFetchedLogs = [...allFetchedLogs, ...data.logs];
+          console.log(`✅ Загружено ${data.logs.length} логов (всего: ${allFetchedLogs.length})`);
+          
+          // Если получили меньше чем запрашивали, значит это последняя страница
+          if (data.logs.length < 100) {
+            hasMore = false;
+          } else {
+            page++;
+          }
+        } else {
+          hasMore = false;
+        }
+      }
+      
+      console.log(`🎉 Всего загружено логов: ${allFetchedLogs.length}`);
+      setAllLogs(allFetchedLogs);
+      
     } catch (err) {
-      console.error("Ошибка загрузки логов:", err);
-      setError(err.detail || err.message || "Ошибка загрузки логов");
+      console.error("❌ Ошибка загрузки логов:", err);
+      setError(err.message || "Ошибка загрузки логов");
     } finally {
       setLoading(false);
     }
-  };
-
-  const handlePageChange = (page) => {
-    if (page >= 1 && page <= totalPages) {
-      setCurrentPage(page);
-    }
-  };
-
-  const handleFilterChange = (newFilter) => {
-    setFilter(newFilter);
-    setCurrentPage(1); // Сбрасываем на первую страницу при смене фильтра
   };
 
   const getLevelColor = (level) => {
@@ -85,52 +83,24 @@ export default function LogsPage() {
       <div className="logs-header">
         <div>
           <h2>Логи системы</h2>
-          <p className="logs-count">Всего записей: {total}</p>
+          <p className="logs-count">Всего записей: {allLogs.length}</p>
         </div>
         <button 
           className="refresh-btn" 
-          onClick={() => fetchLogs(currentPage, filter)}
+          onClick={fetchAllLogs}
           disabled={loading}
         >
           🔄 Обновить
         </button>
       </div>
 
-      {/* Фильтры */}
-      <div className="filters">
-        <button 
-          className={`filter-btn ${filter === "all" ? "active" : ""}`}
-          onClick={() => handleFilterChange("all")}
-        >
-          Все
-        </button>
-        <button 
-          className={`filter-btn error ${filter === "error" ? "active" : ""}`}
-          onClick={() => handleFilterChange("error")}
-        >
-          Ошибки
-        </button>
-        <button 
-          className={`filter-btn warning ${filter === "warning" ? "active" : ""}`}
-          onClick={() => handleFilterChange("warning")}
-        >
-          Предупреждения
-        </button>
-        <button 
-          className={`filter-btn info ${filter === "info" ? "active" : ""}`}
-          onClick={() => handleFilterChange("info")}
-        >
-          Информация
-        </button>
-      </div>
-
       {error && <div className="error-message">{error}</div>}
 
       {loading ? (
-        <div className="loading">Загрузка логов...</div>
+        <div className="loading">Загрузка всех логов...</div>
       ) : (
         <>
-          {logs.length === 0 ? (
+          {allLogs.length === 0 ? (
             <div className="empty-state">
               <p>Логов не найдено</p>
             </div>
@@ -144,7 +114,7 @@ export default function LogsPage() {
                 <div className="col-action"></div>
               </div>
               
-              {logs.map((log) => (
+              {allLogs.map((log) => (
                 <div 
                   key={log.id} 
                   className="table-row"
@@ -179,52 +149,6 @@ export default function LogsPage() {
                   </div>
                 </div>
               ))}
-            </div>
-          )}
-
-          {/* Пагинация */}
-          {totalPages > 1 && (
-            <div className="pagination">
-              <button 
-                className="page-btn"
-                onClick={() => handlePageChange(currentPage - 1)}
-                disabled={currentPage === 1}
-              >
-                ← Назад
-              </button>
-              
-              <div className="page-numbers">
-                {[...Array(totalPages)].map((_, i) => {
-                  const page = i + 1;
-                  // Показываем первую, последнюю, текущую и соседние страницы
-                  if (
-                    page === 1 || 
-                    page === totalPages || 
-                    (page >= currentPage - 1 && page <= currentPage + 1)
-                  ) {
-                    return (
-                      <button
-                        key={page}
-                        className={`page-num ${page === currentPage ? "active" : ""}`}
-                        onClick={() => handlePageChange(page)}
-                      >
-                        {page}
-                      </button>
-                    );
-                  } else if (page === currentPage - 2 || page === currentPage + 2) {
-                    return <span key={page} className="page-dots">...</span>;
-                  }
-                  return null;
-                })}
-              </div>
-              
-              <button 
-                className="page-btn"
-                onClick={() => handlePageChange(currentPage + 1)}
-                disabled={currentPage === totalPages}
-              >
-                Вперед →
-              </button>
             </div>
           )}
         </>

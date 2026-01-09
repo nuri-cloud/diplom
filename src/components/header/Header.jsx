@@ -50,25 +50,17 @@ function Header() {
 
   return (
     <header className="header">
-      <div className="header__container">
+      <div className="header__container container">
         <Link to="/" className="header__logo">
           <img src={logo} alt="logo" />
         </Link>
 
         <nav className="header__nav">
-          {token ? (
             <>
               <Link to="/dashboard">Дашборд</Link>
               <Link to="/logs">Логи</Link>
               <Link to="/settings">Настройки</Link>
             </>
-          ) : (
-            <>
-              <a href="#about">О приложении</a>
-              <a href="#features">Выгода</a>
-              <a href="#problem">Проблема</a>
-            </>
-          )}
         </nav>
 
         <div className="header__right">
