@@ -1,4 +1,4 @@
-const BASE_URL = ""; // Пусто для работы через vite proxy
+const BASE_URL = import.meta.env.VITE_API_URL;
 
 const request = async (url, options = {}) => {
   const token = localStorage.getItem("token");
